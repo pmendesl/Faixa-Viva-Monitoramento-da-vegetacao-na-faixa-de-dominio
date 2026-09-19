@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faixa Viva — Classificação de risco da vegetação</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topo">
+    <div class="container topo__conteudo">
+      <div class="marca">
+        <span class="marca__nome">Faixa Viva</span>
+        <span class="marca__linha">Monitoramento da vegetação na faixa de domínio</span>
+      </div>
+      <p class="topo__trecho">BR-381 Fernão Dias, km 24 a 47</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ============ 1. PERFIL DA FAIXA (gráfico gerado por JavaScript) ============ -->
+    <section class="bloco" aria-labelledby="tituloPerfil">
+      <h1 id="tituloPerfil" class="bloco__titulo">Perfil da faixa</h1>
+      <p class="bloco__apoio">
+        Altura medida em cada ponto monitorado, comparada ao limite contratual de 50 cm.
+        Clique em uma barra para localizar o ponto na tabela.
+      </p>
+
+      <figure class="perfil">
+        <div class="perfil__area">
+          <div class="perfil__eixo" id="perfilEixo" aria-hidden="true"></div>
+          <div class="perfil__limite" aria-hidden="true">
+            <span class="perfil__limite-texto">limite 50 cm</span>
+          </div>
+          <ul class="perfil__pontos" id="perfilPontos"></ul>
+        </div>
+        <figcaption class="perfil__legenda">Quilometragem do trecho monitorado</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ 2. RESUMO POR CLASSIFICAÇÃO (contadores dinâmicos) ============ -->
+    <section class="resumo" id="resumo" aria-label="Resumo por classificação" aria-live="polite"></section>
+
+    <!-- ============ 3. ENTRADA DE DADOS + FILTROS ============ -->
+    <section class="bloco" aria-labelledby="tituloLeitura">
+      <h2 id="tituloLeitura" class="bloco__titulo">Registrar leitura</h2>
+      <p class="bloco__apoio">
+        Informe a altura medida em campo ou pelo sensor. Se a localização já existir,
+        a leitura anterior é substituída.
+      </p>
+
+      <form class="formulario" id="formLeitura" novalidate>
+        <div class="campo">
+          <label for="inputLocal">Localização</label>
+          <input type="text" id="inputLocal" placeholder="km 32+500" autocomplete="off">
+          <p class="campo__erro" id="erroLocal" hidden></p>
+        </div>
+
+        <div class="campo campo--curto">
+          <label for="inputKm">Km</label>
+          <input type="number" id="inputKm" placeholder="32.5" step="0.1" min="0">
+          <p class="campo__erro" id="erroKm" hidden></p>
+        </div>
+
+        <div class="campo campo--curto">
+          <label for="inputAltura">Altura (cm)</label>
+          <input type="number" id="inputAltura" placeholder="45" step="1" min="0">
+          <p class="campo__erro" id="erroAltura" hidden></p>
+        </div>
+
+        <div class="formulario__acoes">
+          <button type="submit" class="botao botao--primario" id="btnRegistrar">Registrar leitura</button>
+          <button type="button" class="botao" id="btnRestaurar">Restaurar dados de exemplo</button>
+        </div>
+      </form>
+
+      <p class="aviso" id="aviso" hidden></p>
+    </section>
+
+    <!-- ============ 4. TABELA DE PONTOS MONITORADOS ============ -->
+    <section class="bloco" aria-labelledby="tituloPontos">
+      <div class="bloco__cabecalho">
+        <div>
+          <h2 id="tituloPontos" class="bloco__titulo">Pontos monitorados</h2>
+          <p class="bloco__apoio" id="contadorPontos"></p>
+        </div>
+
+        <div class="controles">
+          <div class="filtros" id="filtros" role="group" aria-label="Filtrar por classificação"></div>
+          <label class="ordenar" for="selectOrdem">
+            Ordenar por
+            <select id="selectOrdem">
+              <option value="km">quilometragem</option>
+              <option value="altura">maior altura</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="tabela-rolagem">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th scope="col">Localização</th>
+              <th scope="col" class="col-num">Altura da vegetação</th>
+              <th scope="col">Classificação</th>
+              <th scope="col">Ação recomendada</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabela"></tbody>
+        </table>
+      </div>
+
+      <p class="vazio" id="vazio" hidden>Nenhum ponto nesta classificação. Escolha outro filtro.</p>
+    </section>
+
+    <!-- ============ 5. CRITÉRIOS DE CLASSIFICAÇÃO (documentação das faixas) ============ -->
+    <section class="bloco" aria-labelledby="tituloCriterios">
+      <h2 id="tituloCriterios" class="bloco__titulo">Critérios de classificação</h2>
+      <p class="bloco__apoio">
+        Faixas definidas pelo grupo tomando 50 cm como limite de referência para a
+        faixa de domínio. Cada leitura é enquadrada automaticamente em uma delas.
+      </p>
+      <ul class="criterios" id="criterios"></ul>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <p>Faixa Viva — Sprint 3. Alturas de exemplo geradas para demonstração do modelo de classificação.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
